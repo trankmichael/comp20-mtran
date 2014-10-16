@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Daydream Believer</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+<h1 id="title">Daydream Believer</h1>
+
+<video src="http://www.cs.tufts.edu/comp/20/daydream_believer.webm" id="music_video" controls autoplay></video>
+
+<div id="stanza"></div>
+
+<script>
+	window.onload = function () {
+		var v = document.getElementsByTagName("video")[0];
+		var jpg = new Image();
+		var lyrics = ["Oh, I could hide 'neath the wings \nOf the bluebird as she sings.\nThe six o'clock alarm would never ring.\nBut it rings and I rise,\nWipe the sleep out of my eyes.\nMy shavin' razor's cold and it stings.", "Cheer up, Sleepy Jean.\nOh, what can it mean.\nTo a daydream believer\nAnd a homecoming queen.", "You once thought of me\nAs a white knight on a steed.\nNow you know how happy I can be.\nOh, and our good times start and end\nWithout dollar one to spend.\nBut how much, baby, do we really need.", "Cheer up, Sleepy Jean.\nOh, what can it mean.\nTo a daydream believer\nAnd a homecoming queen.", "[Instrumental interlude]", "Cheer up, Sleepy Jean.\nOh, what can it mean.\nTo a daydream believer\nAnd a homecoming queen."] 
+		
+		v.addEventListener("timeupdate", function() {
+			// annotated by stanza 
+			console.log(v.currentTime);
+				
+			if (v.currentTime < 38) {
+				document.getElementById("stanza").innerHTML = lyrics[0];
+			}
+			else if (v.currentTime < 55) {
+				document.getElementById("stanza").innerHTML = lyrics[1];
+			}
+			else if (v.currentTime < 84) {
+				jpg.src = "whiteknight.jpeg";
+				document.getElementById("stanza").innerHTML = lyrics[2];
+				document.getElementById("stanza").appendChild(jpg);
+
+			}
+			else if (v.currentTime < 120) {
+				document.getElementById("stanza").innerHTML = lyrics[3];
+			}
+			else if (v.currentTime < 129) {
+				document.getElementById("stanza").innerHTML = lyrics[4];
+			}
+			else {
+				jpg.src = "sleepy.jpg";
+				document.getElementById("stanza").innerHTML = lyrics[5];
+				document.getElementById("stanza").appendChild(jpg);
+			}
+		}, true);
+		
+	}
+
+</script>
+</body>
+</html>	
+
