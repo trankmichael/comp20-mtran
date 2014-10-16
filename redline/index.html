@@ -3,32 +3,35 @@
 <html>
 
 	<head>
-		<title>Geolocation Map Example</title>
+		<title>Redline</title>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-		// <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 		<link rel="stylesheet" href="redline.css" />
-		
+		<meta charset="utf-8">
 		<script>
 			/* initialize as Tufts Coordinates */
 			var myLat = 42.4069;
 			var myLng = -71.1198;
+
 			var request = new XMLHttpRequest();
 			request.open("GET", "http://developer.mbta.com/lib/rthr/red.json", true);
-
+			console.log(request.status);
 			request.onreadystatechange = function() {
 				if (request.readyState == 4 && request.status == 200) {
 					var array = JSON.parse(request.responseText)
 				}
 			}
 
-			/* get actual coordinates */
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(function(position) {
-				myLat = position.coords.latitude;
-				myLng = position.coords.longitude;
-				renderMap();
-			});
-			}
+			// console.log(array['TripList']['Trips'][0]['TripID']);
+
+			// for(i = 0; i < array['TripList']['Trips'].length; i++) {
+			// 	console.log(i);
+			// 	// pos = new google.maps.LatLng(array[], array[]);
+			// 	// marker = new google.maps.Marker({
+			// 	// 	position:
+			// 	// 	title: 
+			// 	// });
+			// }
 
 			var me = new google.maps.LatLng(myLat, myLng);
 			var myOptions = {
@@ -41,11 +44,23 @@
 			function init()
 			{
 				map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-				getMyLocation();
+
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(function(position) {
+					myLat = position.coords.latitude;
+					myLng = position.coords.longitude;
+				});
+				}
 			}
 
 			me = new google.maps.LatLng(myLat, myLng);
-			map.panTo(me);
+
+			var marker = new google.maps.Marker({
+				position: me,
+				map: map,
+				title:"Hello World!"
+			});
+			marker.setMap(map);
       		
 		</script>
 	</head>
