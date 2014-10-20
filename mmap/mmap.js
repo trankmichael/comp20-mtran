@@ -35,6 +35,7 @@ function post_to_chicken( location )
 
 function init()
 {
+	getLoc();
 	me = new google.maps.LatLng(myLat, myLng); 
 	myOptions = {
 		zoom: 13,
