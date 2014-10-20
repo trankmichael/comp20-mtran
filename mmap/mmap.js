@@ -4,7 +4,7 @@ var myLng = -71.1198;
 
 var me;
 var myOptions;
-var map;
+var MAP;
 
 function getLoc() {
 	if (navigator.geolocation) {
@@ -15,6 +15,16 @@ function getLoc() {
 	} 
 }
 
+function mark(location)
+{
+	var marker = new google.maps.Marker({
+		position: location,
+		map: MAP,
+		title: "ME"
+	});
+	marker.setMap(MAP);
+}
+
 function init()
 {
 	me = new google.maps.LatLng(myLat, myLng); 
@@ -23,6 +33,6 @@ function init()
 		center: me,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
-	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-
+	MAP = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+	mark(me);
 }
