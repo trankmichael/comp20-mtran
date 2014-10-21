@@ -25,6 +25,14 @@ function mark(location)
 	marker.setMap(MAP);
 }
 
+function post_to_chicken( location )
+{
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","http://chickenofthesea.herokuapp.com/sendLocation", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("login=Freckles&lat=42.4069&lng=-71.1198")
+}
+
 function init()
 {
 	me = new google.maps.LatLng(myLat, myLng); 
@@ -35,4 +43,5 @@ function init()
 	};
 	MAP = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 	mark(me);
+   	post_to_chicken(me);
 }
