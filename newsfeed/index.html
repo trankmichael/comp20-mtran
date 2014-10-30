@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>My News Feed</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script>
+		function reload()
+		{
+			output = "";
+			for (key in localStorage) {
+				output = output + "<p>" + key + " - "+ localStorage[key] + "</p>\n";
+			}
+			$('#news')[0].innerHTML = output;
+		}
+		
+		function store()
+		{
+			txt = $('#msg').val();
+			localStorage[$.now()] = txt;
+			reload();
+		}
+	</script>
+</head>
+
+<body>
+	<h1>My News Feed</h1>
+	<div id="header"></div>
+	<h3>My news update: <input type="text" id="msg" name="msg" size="30" onchange="store()" /></h3>
+	<div id="news">News...</div>
+</body>
+</html>
+
