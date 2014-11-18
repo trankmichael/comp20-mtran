@@ -8,18 +8,38 @@
 	<script>
 		function reload()
 		{
-			output = "";
-			for (key in localStorage) {
-				output = output + "<p>" + key + " - "+ localStorage[key] + "</p>\n";
-			}
-			$('#news')[0].innerHTML = output;
+			// output = "";
+			// for (key in localStorage) {
+			// 	output = output + "<p>" + key + " - "+ localStorage[key] + "</p>\n";
+			// }
+			// $('#news')[0].innerHTML = output;
 		}
 		
 		function store()
-		{
+		{	
 			txt = $('#msg').val();
-			localStorage[$.now()] = txt;
-			reload();
+			date = $.now();
+			pair = {time: date,text: txt};
+			count = localStorage.length;
+			localStorage[count] = JSON.stringify(pair);
+			console.log(JSON.stringify(pair));
+			console.log(JSON.parse(localStorage[count]));
+			output = "";
+
+			console.log(count);
+			pair = JSON.parse(localStorage[count]);
+			output = output + "<p>" + pair["time"] + " - " + pair["text"] + "</p>\n";
+			$('#news')[0].innerHTML = output;
+
+			for(var i = 0; i < localStorage.length; i++) {
+				pair = JSON.parse(localStorage[i]);
+				output = output + "<p>" + pair["time"] + " - " + pair["text"] + "</p>\n";
+			}
+			$('#news')[0].innerHTML = output;
+
+			// txt = $('#msg').val();
+			// localStorage[$.now()] = txt;
+			// reload();
 		}
 	</script>
 </head>

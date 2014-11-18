@@ -65,7 +65,7 @@ function add_infoWindow(marker, message)
 
 function post_to_chicken()
 {
-	xhr.open("POST","https://infinite-eyrie-8189.herokuapp.com/sendLocation", true);
+	xhr.open("POST","http://chickenofthesea.herokuapp.com/sendLocation", true);
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhr.onreadystatechange = function() 
 	{
