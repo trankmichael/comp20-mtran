@@ -26,6 +26,8 @@
 		<p><img src="images/xsscommand.jpg" alt="xss command"/></p>
 	<li>Proof of Vulnerability: The XSS is evidenced by the javascript alert box popup window
 		 <p><img src="images/xssevidence.jpg" alt="xss evidence" /></p>
+	<li>Resolution: Escape the special characters that have no business being in a username or latitude or longitude.  The lat lng problem should not be a problem as those inputs should be converted to floats before being stored in the database, but the special characters that could initiate a script must be escaped. Specifically escape instances of "<" </br>
+	The x-xss-protection header should be included in this method.  This would also help mitigate XSS. 
 	</ul>
 </li>
 
@@ -36,8 +38,13 @@
 	<li>Description: In the locations required query a "[$ne]" tag was simply injected with the number 1.  The web application then returned the JSON information of all users not named "1".  As no such user existed all the JSON data was returned.  Though the severity of this particular injection is not greatly catastrophic as all the data is accessible through the "/" index regardless, this reveals a severe flaw in the lack of special character handling for the MongoDB queries. 
 	<li>Proof of Vulnerability:
 		 <p><img src="images/sqlevidence.jpg" alt="sql evidence" /></p>
-	<li>Resolution:
+	<li>Resolution:  All query strings should be handled as potentially dangerous.  A solution to this problem would be to validate the queries.  To do this you must ensure that the variables inputted are properly typed before being passed to the MongoDB fucntions. An example is included below.
 	</ul>
+	<pre>
+		$collection->find(array
+			"login" => (string)$_GET['login']
+		));
+	</pre>
 </li>
 
 <li> SQL Injection:
