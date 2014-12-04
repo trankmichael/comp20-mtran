@@ -18,15 +18,45 @@
 
 <h2> Issues Found </h2>
 
-<li> Cross Site Scripting:
+<li> <h3> Cross Site Scripting: </h3>
 	<ul>
-	<li>Location: /sendLocation </br>
+	<li>Location: /sendLocation
 	<li>Severity: HIGH </br> This is a extremely severe vulnerability.  It allows attackers to input any type of script which is then propogated to all other users who access the database. 
-</br>	<li>Description:The /sendLocation POST method is susceptible to Cross Site Scripting. Javascript using curl commands such as this.
-	
-	<p><img src="images/xsscommand.jpg" alt="xss command"/></p>
-<li>Proof of Vulnerability: The XSS is evidenced by the javascript alert box popup window
- <p><img src="images/xssevidence.jpg" alt="xss evidence" /></p>
-</ul>
+	<li>Description:The /sendLocation POST method is susceptible to Cross Site Scripting. Javascript using curl commands such as this.
+		<p><img src="images/xsscommand.jpg" alt="xss command"/></p>
+	<li>Proof of Vulnerability: The XSS is evidenced by the javascript alert box popup window
+		 <p><img src="images/xssevidence.jpg" alt="xss evidence" /></p>
+	</ul>
+</li>
 
+<li> <h3> SQL Injection: </h3>
+	<ul>
+	<li>Location: /locations.json
+	<li>Severity: HIGH </br> This is a severe vulnerability.  SQL injection allows attackers to sppof their identity as shown below.  This allows them to access otherwise restricted and potentially confidential information.  Having access to such information can allow them to tamber with the database itself.
+	<li>Description: In the locations required query a "[$ne]" tag was simply injected with the number 1.  The web application then returned the JSON information of all users not named "1".  As no such user existed all the JSON data was returned.  Though the severity of this particular injection is not greatly catastrophic as all the data is accessible through the "/" index regardless, this reveals a severe flaw in the lack of special character handling for the MongoDB queries. 
+	<li>Proof of Vulnerability:
+		 <p><img src="images/sqlevidence.jpg" alt="sql evidence" /></p>
+	<li>Resolution:
+	</ul>
+</li>
+
+<li> SQL Injection:
+	<ul>
+	<li>Location
+	<li>Severity: HIGH
+	<li>Description:
+	<li>Proof of Vulnerability:
+	<li>Resolution:
+	</ul>
+</li>
+
+<li> SQL Injection:
+	<ul>
+	<li>Location
+	<li>Severity: HIGH
+	<li>Description:
+	<li>Proof of Vulnerability:
+	<li>Resolution:
+	</ul>
+</li>
 
