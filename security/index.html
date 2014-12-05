@@ -8,10 +8,10 @@
 <body>
 <h1> Security Report -Where In The World </h1>
 <h2> Introduction </h2>
-<p>This is an assessment of the "Where In The World" and "MMAP" web applications. The objective of this report is to find and detail vulnerabilities found. The "Where in the World" web application relises on MongoDB to register the location check-ins of users. The api includes methods which accept new database entries, return the collection of documents, return redline json data, and accept querires for single users.  The MMAP web application functions to read a users location and post to the "Where in the World" application.  </p>
+<p>This is an assessment of the "Where In The World" and "MMAP" web applications. The objective of this report is to find and detail vulnerabilities found. The "Where in the World" web application relies on MongoDB to register the location check-ins of users. The API includes methods which accept new database entries, return the collection of documents, return redline JSON data, and accept querires for single users.  The MMAP web application functions to read a users location and post to the "Where in the World" application.  </p>
 
 <h2> Methodology </h2>
-<p> First, the web application was analyzed by simply testing out certain attacks and inputs on the application running on the heroku server. I mainly tested using common known vulnerabilities of XSS and SQL injection in MongoDB.</p>
+<p> First, the web application was analyzed by simply testing out certain attacks and inputs on the application running on the heroku server. I mainly tested using common known vulnerabilities of XSS and SQL injection in MongoDB. After this was done, a code analysis done was by manually going over the source code.  The application was relatively small so this was a reasonablke option.</p>
 
 <h2> Abstract of Findings </h2>
 <p> The security issues identified largely come from the lack of user input filtering.  The web application readily accepts user input and data without scrubbing or the escaping of special characters.  This allows users to easily inject scripts and malicious input.  This unsanitized input can have catastrophic effects on the database.  As shown in the section below the application is open to a variety of attacks which allow attackers to access and edit the database content that is not meant to be seen or touched. </p>
