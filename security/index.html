@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<h1> Security Report </h1>
+<h1> Security Report -Where In The World </h1>
 <h2> Introduction </h2>
 <p>This is an assessment of the "Where In The World" and "MMAP" web applications. The objective of this report is to find and detail vulnerabilities found. The "Where in the World" web application relises on MongoDB to register the location check-ins of users. The api includes methods which accept new database entries, return the collection of documents, return redline json data, and accept querires for single users.  The MMAP web application functions to read a users location and post to the "Where in the World" application.  </p>
 
@@ -31,10 +31,10 @@
 	</ul>
 </li>
 
-<li> <h3> SQL Injection: </h3>
+<li> <h3> NoSQL Injection: </h3>
 	<ul>
 	<li>Location: /locations.json
-	<li>Severity: HIGH </br> This is a severe vulnerability.  SQL injection allows attackers to sppof their identity as shown below.  This allows them to access otherwise restricted and potentially confidential information.  Having access to such information can allow them to tamber with the database itself.
+	<li>Severity: HIGH </br> This is a severe vulnerability.  NoSQL injection allows attackers to sppof their identity as shown below.  This allows them to access otherwise restricted and potentially confidential information.  Having access to such information can allow them to tamber with the database itself.
 	<li>Description: In the locations required query a "[$ne]" tag was simply injected with the number 1.  The web application then returned the JSON information of all users not named "1".  As no such user existed all the JSON data was returned.  Though the severity of this particular injection is not greatly catastrophic as all the data is accessible through the "/" index regardless, this reveals a severe flaw in the lack of special character handling for the MongoDB queries. 
 	<li>Proof of Vulnerability:
 		 <p><img src="images/sqlevidence.jpg" alt="sql evidence" /></p>
@@ -47,23 +47,42 @@
 	</pre>
 </li>
 
-<li> SQL Injection:
+<li> <h3> Insufficient Anti-Automation: </h3>
 	<ul>
-	<li>Location
-	<li>Severity: HIGH
-	<li>Description:
-	<li>Proof of Vulnerability:
-	<li>Resolution:
+	<li>Location: /sendLocation
+	<li>Severity: MEDIUM </br> This is not as severe as the other vulnerabilities in that it does not have potentially harmful affects on other users.  This security vulnerability has a negative effect on the efficiencyof this application.  If many users were able to flood the database with useless data with malicious intent the database could be effectively DDoSed for other users.  This can make the application useless.
+	<li>Description: This vulnerability is easily exposed using simple scripts, an example is included below
+	<pre>
+		#!/bin/bash
+		for i in `seq 1 100000`;
+		do
+		        curl --data "login=TEST22&lat=999999&lng=999999" damp-tundra-5879.herokuapp.com/sendLocation
+		done   
+	</pre>
+	<li>Proof of Vulnerability: 
+		 <p><img src="images/rateevidence.jpg" alt="rate evidence" /></p>
+
+	<li>Resolution: Rate Limit the user input for each IP address.  Do not allow users to flood the API with as much garbage as they please. Define and detect when request rates are outside of the normal range.  ~5 post requests each second is well outside that range. 
 	</ul>
 </li>
 
-<li> SQL Injection:
+<li> <h3> No Access Control : </h3>
 	<ul>
-	<li>Location
-	<li>Severity: HIGH
-	<li>Description:
-	<li>Proof of Vulnerability:
-	<li>Resolution:
+	<li>Location: /, /sendLocation, /locations, /redline.
+	<li>Severity: Medium
+	<li>Description: The application allows anyone and anything to make requests and receive responses.  This means that access to the application is never denied, it is always authrorized. Any and all users have access to the same data and use it in the same way.  This is a dangerous vulnerability as it is unlikely that all users should share functionality.  All users should not have access to every other users data. 
+	<li>Proof of Vulnerability: Examining the server.js source code revealed that the appllication did indeed have this vulnerability. This is easily seen by the use of the wildcard character '*'. The offending code is shown below. 
+	<pre>
+		response.header("Access-Control-Allow-Origin", "*");
+		response.header("Access-Control-Allow-Headers", "X-Requested-With");
+	</pre> 
+	<li>Resolution: If necessary change the application to allow methods to be used by only specific origins.  For example the response header can be changed to only allow location input from the MMAP web app.  This would also prevent the invalid lat and lng data inputed by curl. i.e. values of 99999999.
+	<pre>
+		response.header("Access-Control-Allow-Origin", "http://tuftsdev.github.io/*");
+	</pre>
 	</ul>
 </li>
 
+<h2> Conclusion </h2>
+<p> As shown above, this web application is riddled with security flaws.  The cause of these vulnerabilities is the belief that users do not have malicious intent. Because of this, input is not sanitized, and all input is assumed correct.  This allows for security issues such as XSS, NoSQL injection, DDoS, and Access Control issues.  To mitigate the effects of such vulnerabilities, precautions should be taken.  These precautions have been outlined above.  Most of these resolutions are easy and simple to implement depending on the desired use of this web application. </p>
+<p> The cost of such a fix would be roughly $500, including this security analysis. This is a relatively small web application without extensive functionality to consider.  After such an evaluation and resolution of these major security vulnerabilities, this web application would be much more reasonable and functional to deploy.  As it stands this application has no defense against any potential attackers. </p>
